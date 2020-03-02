@@ -9,6 +9,7 @@ const customConfig = {
         "react-dom",
         "react-native",
         "react-native-camera",
+        "react-native-interactable",
         "react-native-firebase",
         "react-native-geocoder",
         "react-native-maps",
@@ -56,4 +57,10 @@ const customConfig = {
     }
 };
 
-module.exports = [merge(baseConfig[0], customConfig)];
+const customConfigurations = [merge(baseConfig[0], customConfig)];
+
+if (baseConfig.length === 2) {
+    customConfigurations.push(baseConfig[1]);
+}
+
+module.exports = customConfigurations;
