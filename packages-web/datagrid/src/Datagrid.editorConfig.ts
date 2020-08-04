@@ -33,3 +33,54 @@ export function getProperties(values: DatagridPreviewProps, defaultProperties: P
     }
     return defaultProperties;
 }
+
+export const getPreview = (values: DatagridPreviewProps): any => {
+    const columns =
+        values.columns.length > 0
+            ? values.columns.map(column => ({
+                  type: "layout",
+                  children: [
+                      {
+                          type: "text",
+                          content: column.header,
+                          fontSize: 11
+                      },
+                      column.hasWidgets
+                          ? { type: "container", property: column.content }
+                          : {
+                                type: "text",
+                                content: column.attribute,
+                                fontSize: 10
+                            }
+                  ]
+              }))
+            : [
+                  {
+                      type: "layout",
+                      children: [
+                          {
+                              type: "text",
+                              content: "Column",
+                              fontSize: 11
+                          },
+                          {
+                              type: "text",
+                              content: "Value",
+                              fontSize: 10
+                          }
+                      ]
+                  }
+              ];
+    return {
+        type: "layout",
+        children: [
+            values.showHeader
+                ? { type: "layout", children: [{ type: "container", property: values.headerWidgets }] }
+                : undefined, // Header
+            { type: "layout", orientation: "horizontal", children: columns }, // Columns
+            values.showFooter
+                ? { type: "layout", children: [{ type: "container", property: values.footerWidgets }] }
+                : undefined // Footer
+        ]
+    };
+};
