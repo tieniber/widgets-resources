@@ -98,7 +98,7 @@ class RangeSlider extends Component<RangeSliderProps, {}> {
                     : 100 - stepValue;
         }
 
-        return [validLowerBound, validUpperBound];
+        return [minValue || 0, validLowerBound, validUpperBound, maxValue || 100];
     }
 
     private createTooltip(text: string): (props: TooltipProps) => ReactNode {

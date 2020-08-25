@@ -157,15 +157,15 @@ export default class RangeSliderContainer extends Component<RangeSliderContainer
         const { mxObject, lowerBoundAttribute, upperBoundAttribute } = this.props;
 
         if (mxObject && this.validValues(values)) {
-            if (values[0] !== this.state.lowerBoundValue && !mxObject.isReadonlyAttr(lowerBoundAttribute)) {
+            if (values[1] !== this.state.lowerBoundValue && !mxObject.isReadonlyAttr(lowerBoundAttribute)) {
                 this.selfUpdate = true;
-                mxObject.set(lowerBoundAttribute, values[0]);
+                mxObject.set(lowerBoundAttribute, values[1]);
             }
-            if (values[1] !== this.state.upperBoundValue && !mxObject.isReadonlyAttr(upperBoundAttribute)) {
+            if (values[2] !== this.state.upperBoundValue && !mxObject.isReadonlyAttr(upperBoundAttribute)) {
                 this.selfUpdate = true;
-                mxObject.set(upperBoundAttribute, values[1]);
+                mxObject.set(upperBoundAttribute, values[2]);
             }
-            this.setState({ lowerBoundValue: values[0], upperBoundValue: values[1] });
+            this.setState({ lowerBoundValue: values[1], upperBoundValue: values[2] });
         }
     }
 
@@ -174,19 +174,19 @@ export default class RangeSliderContainer extends Component<RangeSliderContainer
         const { lowerBoundAttribute, upperBoundAttribute } = this.props;
         return (
             Array.isArray(values) &&
-            values.length === 2 &&
+            values.length === 4 &&
             typeof minimumValue === "number" &&
             typeof maximumValue === "number" &&
-            typeof values[0] === "number" &&
             typeof values[1] === "number" &&
+            typeof values[2] === "number" &&
             minimumValue <= maximumValue &&
-            values[0] >= minimumValue &&
-            values[0] <= maximumValue &&
             values[1] >= minimumValue &&
             values[1] <= maximumValue &&
-            values[0] <= values[1] &&
-            (this.isDecimal(lowerBoundAttribute) || (!this.isDecimal(lowerBoundAttribute) && values[0] % 1 === 0)) &&
-            (this.isDecimal(upperBoundAttribute) || (!this.isDecimal(upperBoundAttribute) && values[1] % 1 === 0))
+            values[2] >= minimumValue &&
+            values[2] <= maximumValue &&
+            values[1] <= values[2] &&
+            (this.isDecimal(lowerBoundAttribute) || (!this.isDecimal(lowerBoundAttribute) && values[1] % 1 === 0)) &&
+            (this.isDecimal(upperBoundAttribute) || (!this.isDecimal(upperBoundAttribute) && values[2] % 1 === 0))
         );
     }
 
@@ -207,11 +207,11 @@ export default class RangeSliderContainer extends Component<RangeSliderContainer
     }
 
     private handleChangeAction(value: number[]): void {
-        if (this.previousLowerBoundValue === value[0] && this.previousUpperBoundValue === value[1]) {
+        if (this.previousLowerBoundValue === value[1] && this.previousUpperBoundValue === value[2]) {
             return;
         }
-        this.previousLowerBoundValue = value[0];
-        this.previousUpperBoundValue = value[1];
+        this.previousLowerBoundValue = value[1];
+        this.previousUpperBoundValue = value[2];
 
         if (value !== undefined && this.props.mxObject) {
             this.callOnChangeEvents(this.props.mxObject);
